@@ -1,17 +1,19 @@
-install node.js https://nodejs.org/en/ and npm (node.js comes with npm already if on windows)
-install git https://git-scm.com/
+* install node.js https://nodejs.org/en/ and npm (node.js comes with npm already if on windows)
+* install git https://git-scm.com/
 
-download or clone code thru "git clone -b emanuel --single-branch https://github.com/PaulLGibbs/nevermore.git"
+* download or clone code thru "git clone -b emanuel --single-branch https://github.com/PaulLGibbs/nevermore.git"
 
-cd into folder 
+* cd into folder nevermore/frontend/nevermore-front
 
-Run "npm install react-scripts" and "npm start" in windows cmd or mac/linux terminal, then default browser will popup with the webpage on localhost.
+* Run "npm install"
 
-Open up folder in code editor. I highly recommend vscode run "code ." to start coding in vscode.
+* "npm start" in windows cmd or mac/linux terminal, then default browser will popup with the webpage on localhost.
 
-Components folder has all the running parts for the website, app.js is the main website, index.css is the css.
+* Open up folder in code editor. I highly recommend vscode run "code ." to start coding in vscode.
 
-Commit, push if you make any changes.
+* This is written in react.js. Components folder has all the running parts for the website, app.js is the main website, index.css is the css. 
+
+* Commit, push if you make any changes.
 
 
 

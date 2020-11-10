@@ -2,55 +2,45 @@ import React from 'react';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import logo from './logo.svg';
 
-import twitterLogin from "./components/twitterLogin";
-import Login from "./components/login.component";
-import SignUp from "./components/Signup";
-
+import twLogin from "./components/twLogin";
 
 
 import FormControl from 'react-bootstrap/FormControl';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+
+
 
 
 function App() {
   return (<Router>
     <div className="App">
       {/*nav bar*/}
-      <nav className="navbar navbar-expand-lg navbar-light fixed-top">
-        <div className="container">
-          <Link className="navbar-brand" to={"/twitter-login"}>Nevermore</Link>
-          <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
-            {/*search bar*/}
-            <Form inline>
+      <Navbar bg="light" expand="lg">
+  <Navbar.Brand href="twLogin">Nevermore</Navbar.Brand>
+  <img src={logo} width="100" height="40" className="d-inline-block align-top"/>
+  <Navbar.Toggle aria-controls="basic-navbar-nav" />
+  <Navbar.Collapse id="basic-navbar-nav">
+    <Nav className="mr-auto">
+      <Nav.Link href="twLogin">Twitter Login</Nav.Link>
+    </Nav>
+    <Form inline>
       <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-      <Button variant="outline-primary">Search</Button>
+      <Button variant="outline-success">Search</Button>
     </Form>
-          {/*end search bar*/}
-            <ul className="navbar-nav ml-auto">
-            <li className="nav-item">
-                <Link className="nav-link" to={"/twitter-login"}>Twitter Login</Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to={"/sign-in"}>Login</Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to={"/sign-up"}>Sign up</Link>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
+  </Navbar.Collapse>
+</Navbar>
         {/* end nav bar*/}
       <div className="auth-wrapper">
         <div className="auth-inner">
           <Switch>
           
-            <Route exact path='/' component={twitterLogin} />
-            <Route path="/sign-in" component={Login} />
-            <Route path="/sign-up" component={SignUp} />
-            <Route path="/twitter-login" component={twitterLogin} />
+            <Route exact path='/' component={twLogin} />
+            <Route exact path='/twLogin' component={twLogin} />
           </Switch>
         </div>
         {/*Page Footer*/}
