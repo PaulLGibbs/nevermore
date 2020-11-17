@@ -5,7 +5,7 @@ import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth"
 
 
 firebase.initializeApp({
-  apiKey: "AIzaSyDEEHsDmEOVCMl0R08pJYzrE6UU1GZUAQk",
+  apiKey: "",
   authDomain: "nevermore-291718.firebaseapp.com"
 })
 var postUrl;
