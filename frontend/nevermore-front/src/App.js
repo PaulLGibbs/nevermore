@@ -1,0 +1,52 @@
+import React from 'react';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import './App.css';
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import logo from './logo.svg';
+
+import twLogin from "./components/twLogin";
+
+
+import FormControl from 'react-bootstrap/FormControl';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+
+
+
+
+function App() {
+  return (<Router>
+    <div className="App">
+      {/*nav bar*/}
+      <Navbar bg="light" expand="lg">
+  <Navbar.Brand href="twLogin">Nevermore</Navbar.Brand>
+  <img src={logo} width="100" height="40" className="d-inline-block align-top"/>
+  <Navbar.Toggle aria-controls="basic-navbar-nav" />
+  <Navbar.Collapse id="basic-navbar-nav">
+    <Nav className="mr-auto">
+      <Nav.Link href="twLogin">Twitter Login</Nav.Link>
+    </Nav>
+    <Form inline>
+      <FormControl type="text" placeholder="Search" className="mr-sm-2" />
+      <Button variant="outline-success">Search</Button>
+    </Form>
+  </Navbar.Collapse>
+</Navbar>
+        {/* end nav bar*/}
+      <div className="auth-wrapper">
+        <div className="auth-inner">
+          <Switch>
+          
+            <Route exact path='/' component={twLogin} />
+            <Route exact path='/twLogin' component={twLogin} />
+          </Switch>
+        </div>
+        {/*Page Footer*/}
+      </div>
+    </div></Router>
+  );
+}
+
+export default App;
