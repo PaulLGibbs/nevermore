@@ -2,10 +2,21 @@ import React, { Component } from "react"
 import firebase from "firebase"
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth"
 
+
+
 firebase.initializeApp({
   apiKey: "AIzaSyDEEHsDmEOVCMl0R08pJYzrE6UU1GZUAQk",
   authDomain: "nevermore-291718.firebaseapp.com"
 })
+var postUrl;
+var tweetText;
+
+function createUrl(tweetText){
+  tweetText.replace(" ", "%20");
+  tweetText.replace("#","%23");
+  postUrl = postUrl + tweetText;
+  return postUrl;
+}
 
 class twLogin extends Component {
   state = { isSignedIn: false }
@@ -20,6 +31,7 @@ class twLogin extends Component {
         var secret = result.credential.secret;
         console.log("Access token: ", token , "\n" , "Token secret", secret)
         //alert("token: " +  token + "\n" + "secret: " + secret)
+        postUrl = "https://us-west2-nevermore-291718.cloudfunctions.net/function-2?acc_token=" +  token + "&token_secret=" + secret + "&tweet_body=Sent%20by%20Nevermore%20#23Nevermoretweet";
       }
     }
   }
@@ -31,7 +43,7 @@ class twLogin extends Component {
     }
     )
   }
-  render() {
+  render = () => {
     return (
       <div className="App">
         <div>Hello, Welcome to Nevermore</div>
@@ -45,12 +57,20 @@ class twLogin extends Component {
               src={firebase.auth().currentUser.photoURL}
             />
             <p>
-            <textarea name="message" rows="5" id="message" ></textarea>
+            <textarea name="screech" rows="5" id="screech" ></textarea>
             </p>
             <p>
-            <button>Post Screech</button>
+            <button id="tweet">Submit</button>
+
+              <script>
+                document.getElementById("tweet").addEventListener("click", myFunction);
+
+                function myFunction() { window.location = postUrl }
+              </script>
+
             </p>
-          
+            
+
           </span>
         ) : (
           <StyledFirebaseAuth
