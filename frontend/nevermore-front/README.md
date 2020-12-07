@@ -5,9 +5,11 @@
 
 * cd into folder nevermore/frontend/nevermore-front
 
-* Run "npm install"
+* add api key nevermore/frontend/nevermore-front/components/twLogin. Line 9. (i cant put this on github)
 
-* "npm start" in windows cmd or mac/linux terminal, then default browser will popup with the webpage on localhost.
+* Run "npm install"  in terminal
+
+* Run "npm start" in windows cmd or mac/linux terminal, then default browser will popup with the webpage on localhost.
 
 * Open up folder in code editor. I highly recommend vscode run "code ." to start coding in vscode.
 
