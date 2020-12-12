@@ -1,21 +1,17 @@
 import React, { Component } from "react"
 import firebase from "firebase"
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth"
+import { Timeline, Tweet } from 'react-twitter-widgets'
+import Button from 'react-bootstrap/Button';
+import ReactDOM from "react-dom";
+import { render } from "react-dom";
 
-//add your own firebase config
-firebase.initializeApp({
-  apiKey: "", 
-  authDomain: "nevermore-291718.firebaseapp.com",
-  databaseURL: "https://nevermore-291718.firebaseio.com",
-  projectId: "nevermore-291718",
-  storageBucket: "nevermore-291718.appspot.com",
-})
 
-var postUrl;
+var deleteUrl;
 var credential;
 
 class twLogin extends Component {
-  state = { isSignedIn: false, value: ''}
+  state = { isSignedIn: false, value: '', seconds: 0}
   
   uiConfig = {
     signInFlow: "popup",
@@ -27,8 +23,8 @@ class twLogin extends Component {
         var token = result.credential.accessToken;
         var secret = result.credential.secret;
         //credential = firebase.auth.TwitterAuthProvider.credential(token, secret);
-        postUrl = "https://us-west2-nevermore-291718.cloudfunctions.net/functionpython-2?acctoken=" + token + "&toksecret=" + secret + "&tbody="
-        console.log("Access token: ", token, "\n", "Token secret ", secret, "\npostUrl: ", postUrl);
+        deleteUrl = "https://us-west2-nevermore-291718.cloudfunctions.net/tweetDelete?acctoken=" + token + "&toksecret=" + secret + "&tweetId="
+        console.log("Access token: ", token, "\n", "Token secret ", secret, "\npostUrl: ", deleteUrl);
         //alert("token: " +  token + "\n" + "secret: " + secret);
         
         return true;
@@ -42,22 +38,37 @@ class twLogin extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+
+    this.tick = this.tick.bind(this);
+    this.state.seconds = props.seconds;
   }
 
   componentDidMount = () => {
+    this.timer = setInterval(this.tick, 1000);
     firebase.auth().onAuthStateChanged(user => {
-      this.setState({ isSignedIn: !!user })
-      console.log("user", user)
+      this.setState({ isSignedIn: !!user });
+      console.log("user", user);
+      
     }
     )
   }
 
-  createUrl(tweetText) {
-    tweetText.replace('#', "%23");
-    tweetText.replace(" ", "%20");
-    postUrl = postUrl + tweetText;
+  componentDidMount(){
+    this.timer = setInterval(this.tick, 1000);
+  }
+  tick(){
+    if (this.state.seconds > 0) {
+      this.setState({seconds: this.state.seconds - 1});
+      console.log(this.state.seconds);
+    } else {
+      //clearInterval(this.timer);
+      //window.location.reload();
+    }
+  }
+  createUrl(tweetId) {
+    deleteUrl = deleteUrl + tweetId;
     this.state.value = '';
-    return postUrl;
+    return deleteUrl;
   }
 
   handleChange(event) {
@@ -66,9 +77,10 @@ class twLogin extends Component {
 
   handleSubmit(event) {
     //alert('A name was submitted: ' + this.state.value);
-    let tweetToBeSent = this.createUrl(this.state.value);
-    window.open(tweetToBeSent);
-    console.log(tweetToBeSent);
+    let tweetToBeDeleted = this.createUrl(this.state.value);
+    
+    window.open(tweetToBeDeleted );
+    console.log(tweetToBeDeleted );
     event.preventDefault();
   }
   render = () => {
@@ -87,11 +99,21 @@ class twLogin extends Component {
             />
             <form onSubmit={this.handleSubmit}>
             <label>
-                <h2>Tweet:</h2>
+                <h2>Tweet ID to delete:</h2>
                 <textarea value={this.state.value} onChange={this.handleChange} />
             </label>
-            <input type="submit" value="Submit" />
+            <input type="submit" value="Delete Tweet" />
             </form>
+            
+            <h1>Your screeches: </h1>
+            <Tweet tweetId= {this.state.value} />
+            <Button variant="outline-danger">Delete in 5 minutes</Button>
+            <Button variant="outline-success">Add 5 minutes</Button>{' '}
+            <Button variant="outline-danger">Delete in 1 hour</Button>
+            <Button variant="outline-success">Add 1 hour</Button>{' '}
+            
+                <h3 value={this.state.seconds}>Timer: Broken :(</h3>
+            
 
           </span>
         
@@ -105,6 +127,6 @@ class twLogin extends Component {
     )
   }
 }
+render(<twLogin seconds={60} />, document.getElementById("root"));
 
 export default twLogin
-

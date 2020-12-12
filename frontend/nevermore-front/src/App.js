@@ -5,13 +5,13 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import logo from './logo.svg';
 
 import twLogin from "./components/twLogin";
+import yourScreeches from "./components/yourScreeches";
 
 
-import FormControl from 'react-bootstrap/FormControl';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
+
+import { FormControl, Form, Button, Nav, Navbar } from "react-bootstrap";
+
+
 
 
 
@@ -27,6 +27,8 @@ function App() {
   <Navbar.Collapse id="basic-navbar-nav">
     <Nav className="mr-auto">
       <Nav.Link href="twLogin">Twitter Login</Nav.Link>
+      <Nav.Link href="yourScreeches">Your Screeches</Nav.Link>
+      <Nav.Link href="https://twitter.com/account/begin_password_reset">Forgot Password?</Nav.Link>
     </Nav>
     <Form inline>
       <FormControl type="text" placeholder="Search" className="mr-sm-2" />
@@ -41,6 +43,7 @@ function App() {
           
             <Route exact path='/' component={twLogin} />
             <Route exact path='/twLogin' component={twLogin} />
+            <Route exact path='/yourScreeches' component={yourScreeches} />
           </Switch>
         </div>
         {/*Page Footer*/}
