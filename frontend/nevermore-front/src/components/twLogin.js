@@ -2,29 +2,21 @@ import React, { Component } from "react"
 import firebase from "firebase"
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth"
 
-
-
-
+//add your own firebase config
 firebase.initializeApp({
-    apiKey: "", //ADD THIS IF YOU DOWNLOADED FROM GITHUB
-    authDomain: "nevermore-291718.firebaseapp.com",
-    databaseURL: "https://nevermore-291718.firebaseio.com",
-    projectId: "nevermore-291718",
-    storageBucket: "nevermore-291718.appspot.com",
+  apiKey: "", 
+  authDomain: "nevermore-291718.firebaseapp.com",
+  databaseURL: "https://nevermore-291718.firebaseio.com",
+  projectId: "nevermore-291718",
+  storageBucket: "nevermore-291718.appspot.com",
 })
 
 var postUrl;
-var tweetText;
-
-function createUrl(tweetText) {
-  tweetText.replace(" ", "%20");
-  tweetText.replace("#", "%23");
-  postUrl = postUrl + tweetText;
-  return postUrl;
-}
+var credential;
 
 class twLogin extends Component {
-  state = { isSignedIn: false }
+  state = { isSignedIn: false, value: ''}
+  
   uiConfig = {
     signInFlow: "popup",
     signInOptions: [
@@ -34,14 +26,23 @@ class twLogin extends Component {
       signInSuccessWithAuthResult: function (result) {
         var token = result.credential.accessToken;
         var secret = result.credential.secret;
-        console.log("Access token: ", token, "\n", "Token secret", secret)
-        //alert("token: " +  token + "\n" + "secret: " + secret)
-        postUrl = "https://us-west2-nevermore-291718.cloudfunctions.net/functionpython-2?acctoken=" + token + "&toksecret=" + secret + "&tbody=Sent%20by%20Nevermore%20%23Nevermoretweet";
+        //credential = firebase.auth.TwitterAuthProvider.credential(token, secret);
+        postUrl = "https://us-west2-nevermore-291718.cloudfunctions.net/functionpython-2?acctoken=" + token + "&toksecret=" + secret + "&tbody="
+        console.log("Access token: ", token, "\n", "Token secret ", secret, "\npostUrl: ", postUrl);
+        //alert("token: " +  token + "\n" + "secret: " + secret);
+        
+        return true;
       }
     }
   }
 
+  constructor(props) {
+    super(props);
+    this.tweetthis = React.createRef();
 
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
 
   componentDidMount = () => {
     firebase.auth().onAuthStateChanged(user => {
@@ -49,20 +50,32 @@ class twLogin extends Component {
       console.log("user", user)
     }
     )
+  }
 
-    this.tweetthis = () => {
-		var functions = firebase.app().functions('us-west2');
-      var callTweet = firebase.functions().httpsCallable('functionpython-2')
-      callTweet().then(result => (
-        console.log(result.data)
-      ))
-    }
+  createUrl(tweetText) {
+    tweetText.replace('#', "%23");
+    tweetText.replace(" ", "%20");
+    postUrl = postUrl + tweetText;
+    this.state.value = '';
+    return postUrl;
+  }
+
+  handleChange(event) {
+    this.setState({value: event.target.value});
+  }
+
+  handleSubmit(event) {
+    //alert('A name was submitted: ' + this.state.value);
+    let tweetToBeSent = this.createUrl(this.state.value);
+    window.open(tweetToBeSent);
+    console.log(tweetToBeSent);
+    event.preventDefault();
   }
   render = () => {
     return (
       <div className="App">
         <div>Hello, Welcome to Nevermore</div>
-        <a href="https://twitter.com/account/begin_password_reset">Forgot password?</a>
+        
         {this.state.isSignedIn ? (
           <span>
             <div>Signed In!</div>
@@ -72,16 +85,16 @@ class twLogin extends Component {
               alt="profile pic"
               src={firebase.auth().currentUser.photoURL}
             />
-            <p>
-              <textarea name="screech" rows="5" id="screech" ></textarea>
-            </p>
-              <p>
-              <button id = "tweet" ref={this.tweetthis}>Post tweet</button>
-                
-              </p>
-            
+            <form onSubmit={this.handleSubmit}>
+            <label>
+                <h2>Tweet:</h2>
+                <textarea value={this.state.value} onChange={this.handleChange} />
+            </label>
+            <input type="submit" value="Submit" />
+            </form>
 
           </span>
+        
         ) : (
             <StyledFirebaseAuth
               uiConfig={this.uiConfig}
@@ -94,3 +107,4 @@ class twLogin extends Component {
 }
 
 export default twLogin
+
